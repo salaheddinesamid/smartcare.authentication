@@ -37,7 +37,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                throw new BadCredentialsException();
            }
            // Generate the token for authenticated user:
-           String token = jwtUtil.generateToken(loginRequest.getEmail(),"DOCTOR");
+           String token = jwtUtil.generateToken(loginRequest.getEmail(),"");
 
            return new LoginResponseDto(
                    token,
