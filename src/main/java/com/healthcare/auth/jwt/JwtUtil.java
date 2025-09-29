@@ -18,6 +18,7 @@ public class JwtUtil {
 
     private static String SECRET_KEY = "f456e2035bb10cd9b599c1c4e953ca9fadd11dfd1ea8a88c6b04261cc76650bf0acc354f29a265b955f8921173939e9021bf51fcebb90125b66a433b656bb4c4";
     private static final long EXPIRATION = 36000000L;
+    private final long REFRESH_TOKEN_EXPIRATION = 7 * 24 * 60 * 60 * 1000;
 
     public boolean validateToken(String token) {
         try {
@@ -34,6 +35,15 @@ public class JwtUtil {
                         .setSubject(email) // set the subject
                         .claim("role",role) // set a claim
                         .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION)) // set an expiration date
+                        .signWith(SignatureAlgorithm.HS256,SECRET_KEY)
+                        .compact();
+    }
+
+    public String generateRefreshToken(String email){
+        return
+                Jwts.builder()
+                        .setSubject(email)
+                        .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION))
                         .signWith(SignatureAlgorithm.HS256,SECRET_KEY)
                         .compact();
     }
